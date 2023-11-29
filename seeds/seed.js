@@ -1,5 +1,5 @@
-const sequelize = require('../02p-starter-code/project-2-starter-code/config/connection');
-const { User } = require('../02p-starter-code/project-2-starter-code/models');
+const sequelize = require('../config/connection');
+const { User } = require('../models');
 
 const userData = require('./userData.json');
 
