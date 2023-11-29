@@ -4,7 +4,7 @@ CREATE DATABASE gig_work_db;
 
 USE gig_work_db;
 
-CREATE TABLE users(
+CREATE TABLE user(
     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
