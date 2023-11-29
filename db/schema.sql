@@ -18,5 +18,7 @@ CREATE TABLE workdays(
     driving_hours INT,
     miles INT,
     rain BOOLEAN,
-    temp INT
+    temp INT,
+    user INT,
+    FOREIGN KEY (user) REFERENCES Users(id)
 );
