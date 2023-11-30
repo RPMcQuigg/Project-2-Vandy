@@ -1,0 +1,42 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fride.guru%2Fcontent%2Fnewsroom%2Fhow-to-save-money-on-your-uber-rides&psig=AOvVaw2Scm_AGYKdpXRehtmc6T1N&ust=1701313496388000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJC5_eac6IIDFQAAAAAdAAAAABAE');
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-signup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.login-signup a {
+    margin-left: 10px;
+}
+
+.welcome-text {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+h2 {
+    color: #28a745;
+}
+
+p {
+    color: #6c757d;
+}
