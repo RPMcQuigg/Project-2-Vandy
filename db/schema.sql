@@ -21,5 +21,5 @@ CREATE TABLE workdays(
     rain BOOLEAN,
     temp INT,
     user INT,
-    FOREIGN KEY (user) REFERENCES Users(id)
+    FOREIGN KEY (user) REFERENCES user(id)
 );
