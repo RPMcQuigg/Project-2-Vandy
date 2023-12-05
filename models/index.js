@@ -7,8 +7,8 @@ Workdays.belongsTo(User, {
     foreignKey: 'user_id',
 });
 
-// User.hasMany(Workdays, {
-//     foreignKey: 'user',
-// })
+User.hasMany(Workdays, {
+    foreignKey: 'user_id',
+});
 
 module.exports = { User };
