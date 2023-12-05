@@ -4,13 +4,16 @@
     <meta charset='UTF-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <title>Project 2</title>
+    {{#each css}}
+        <link rel="stylesheet" href="/css/{{this}}">
+    {{/each}}
   </head>
 
   <body>
     <div class=''>
       <header class=''>
         <h1>
-          <a href='/'>Project 2</a>
+          <a href='/'>Tips</a>
         </h1>
         <nav>
           <!-- Conditionally render login or logout links -->
@@ -21,7 +24,7 @@
 
             <button class='' id='logout'>logout</button>
           {{else}}
-            <a href='/login'>Login or Sign-up</a>
+            <a href='/login'class="btn btn-primary btn-login">Login or Sign-up</a>
           {{/if}}
         </nav>
       </header>
