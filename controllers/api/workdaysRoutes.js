@@ -12,13 +12,21 @@ router.post('/', async (req, res) => {
         req.body.miles = workData.miles;
         req.body.rain = workData.rain;
         req.body.temperature = workData.temperature;
-        req.body.user = workData.user;
 
-        res.status(200).json(userData);
+        res.status(200).json(workData);
     } catch (err) {
         console.log(err);
         res.status(400).json(err);
     }
 });
+
+router.get('/', async (req, res) => {
+    try {
+        const workData = await Workdays.findAll(); // Where user.id = session.user.id
+        res.status(201).json(workData);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+})
 
 module.exports = router;

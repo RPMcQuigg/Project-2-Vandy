@@ -9,8 +9,8 @@ const workdaysInput = async (event) => {
     const date = document.querySelector('#date-input').value.trim();
     const revenue = document.querySelector('#revenue-input').value.trim();
     const expenses = document.querySelector('#expenses-input').value.trim();
-    const hoursWorked = document.querySelector('#hoursWorked-input').value.trim();
-    const milesDriven = document.querySelector('#milesDriven-input').value.trim();
+    const hours = document.querySelector('#hours-input').value.trim();
+    const miles = document.querySelector('#miles-input').value.trim();
     const rain = document.querySelector('#rain-input').value.trim();
     const temperature = document.querySelector('#temperature-input').value.trim();
     // TODO: session User = User
@@ -25,8 +25,8 @@ const workdaysInput = async (event) => {
         date,
         revenue,
         expenses,
-        hoursWorked,
-        milesDriven,
+        hours,
+        miles,
         rain,
         temperature
     }
