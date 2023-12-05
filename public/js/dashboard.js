@@ -1,6 +1,64 @@
 // Needs a form for user input with fields [Date, Revenue, Expenses, Hours Worked, Miles Driven, Rain, Temperature] with submit at the end
 
 // Workdays User Input Submit 
+document.addEventListener("DOMContentLoaded", function () {
+    let chartData = {
+        labels: [],
+        datasets: [
+            {
+                label: "revenue",
+                borderColor: 'rgb(255, 99, 132)',
+                data: [],
+                fill: false,
+            },
+            {
+                label: "expenses",
+                borderColor: 'rgb(75, 192, 192)',
+                data: [],
+                fill: false,
+            },
+        ],
+    };
+
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                type: 'category',
+                labels: chartData.labels,
+            },
+            y: {
+                beginAtZero: true,
+            },
+        },
+    };
+
+    const ctx = document.getElementById("lineChart").getContext("2d");
+    const lineChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: options,
+    });
+
+    window.addData = function (dataType) {
+        const inputElement = document.getElementById(dataType);
+        const formData = {
+            label: new Date().toLocaleDateString(),
+            data: Number(inputElement.value),
+        };
+
+        chartData.labels.push(formData.label);
+        chartData.datasets.find(ds => ds.label === dataType).data.push(formData.data);
+
+        lineChart.update();
+
+        inputElement.value = "";
+    };
+
+    window.filterData = function () {
+    };
+});
 
 const workdaysInput = async (event) => {
     event.preventDefault();
