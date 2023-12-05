@@ -4,6 +4,9 @@
     <meta charset='UTF-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <title>Project 2</title>
+    {{#each css}}
+        <link rel="stylesheet" href="/css/{{this}}">
+    {{/each}}
   </head>
 
   <body>
@@ -21,7 +24,7 @@
 
             <button class='' id='logout'>logout</button>
           {{else}}
-            <a href='/login'>Login or Sign-up</a>
+            <a href='/login'class="btn btn-primary btn-login">Login or Sign-up</a>
           {{/if}}
         </nav>
       </header>
