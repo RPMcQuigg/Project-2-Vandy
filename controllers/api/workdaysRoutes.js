@@ -25,6 +25,7 @@ router.get('/', async (req, res) => {
         const workData = await Workdays.findAll(); // Where user.id = session.user.id
         res.status(201).json(workData);
     } catch (err) {
+        console.log(err);
         res.status(400).json(err);
     }
 })
