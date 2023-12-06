@@ -1,1 +1,41 @@
-<h3>Dashboard Page</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <title>Chart.js Line Chart</title>
+</head>
+<body>
+    <h3>Dashboard Page</h3>
+    <div class="chart-container">
+        <canvas id="lineChart"></canvas>
+    </div>
+    
+    <div class="input-containers">
+        <div class="dates">
+            <input onchange="filterData()" type="date" id="startdate">
+
+            <input onchange="filterData()" type="date" id="enddate">
+        </div>
+
+        <div class="Money">
+            <form id="payForm">
+                <label for="revenue">Revenue:</label>
+                <input type="number" id="revenue" required>
+                <button type="button" onclick="addData('revenue')">Add Data</button>
+            </form>
+            
+            <form id="tipsForm">
+                <label for="expenses">Expenses:</label>
+                <input type="number" id="expenses" required>
+                <button type="button" onclick="addData('expenses')">Add Data</button>
+            </form>
+            
+        </div>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
