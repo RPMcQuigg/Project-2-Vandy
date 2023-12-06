@@ -1,3 +1,5 @@
+import Chart from 'chart.js/auto';
+
 // Needs a form for user input with fields [Date, Revenue, Expenses, Hours Worked, Miles Driven, Rain, Temperature] with submit at the end
 
 // Workdays User Input Submit 
@@ -106,3 +108,19 @@ const workdaysInput = async (event) => {
         console.log(err);
     }
 };
+
+new Chart(
+    document.getElementById('dashboard-chart'),
+    {
+        type: 'line',
+        data: {
+            labels: data.map(row => row.date),
+            datasets: [
+                {
+                    label: 'Daily Revenue',
+                    data: data.map(row => row.revenue)
+                }
+            ]
+        }
+    }
+)
