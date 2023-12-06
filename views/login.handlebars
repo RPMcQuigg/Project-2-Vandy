@@ -1,55 +1,54 @@
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/styles.css">
-<div class='forms-wrapper'>
-    <div class='login-container'>
-        <h2>Login</h2>
-        <form id='login-form'>
-            <div class='form-group'>
-                <label for='email-login'>Email:</label>
-                <input class='input-field' type='text' id='email-login' />
+
+
+{{!-- <body class="bg-light"> --}}
+
+    <div class="container">
+        <div class="row forms-wrapper justify-content-center">
+            <div class="col-md-6 login-container">
+                <h2 class="text-center">Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email-login">Email:</label>
+                        <input class="form-control" type="text" id="email-login">
+                    </div>
+                    <div class="form-group">
+                        <label for="password-login">Password:</label>
+                        <input class="form-control" type="password" id="password-login">
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary" type="submit">Login</button>
+                    </div>
+                </form>
             </div>
-            <div class='form-group'>
-                <label for='password-login'>Password:</label>
-                <input class='input-field' type='password' id='password-login' />
+
+            <div class="col-md-6 signup-container">
+                <h2 class="text-center">Signup</h2>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="first-name-signup">First Name:</label>
+                        <input class="form-control" type="text" id="first-name-signup">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name-signup">Last Name:</label>
+                        <input class="form-control" type="text" id="last-name-signup">
+                    </div>
+                    <div class="form-group">
+                        <label for="email-signup">Email:</label>
+                        <input class="form-control" type="text" id="email-signup">
+                    </div>
+                    <div class="form-group">
+                        <label for="password-signup">Password:</label>
+                        <input class="form-control" type="password" id="password-signup">
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-success" type="submit">Signup</button>
+                    </div>
+                </form>
             </div>
-            <div class='form-group'>
-                <button class='submit-button' type='submit'>Login</button>
-            </div>
-        </form>
+        </div>
     </div>
 
-    <div class='signup-container'>
-        <h2>Signup</h2>
-        <form id='signup-form'>
-            <div class='form-group'>
-                <label for='first-name-signup'>First Name:</label>
-                <input class='input-field' type='text' id='first-name-signup' />
-            </div>
-            <div class='form-group'>
-                <label for='last-name-signup'>Last Name:</label>
-                <input class='input-field' type='text' id='last-name-signup' />
-            </div>
-            <div class='form-group'>
-                <label for='email-signup'>Email:</label>
-                <input class='input-field' type='text' id='email-signup' />
-            </div>
-            <div class='form-group'>
-                <label for='password-signup'>Password:</label>
-                <input class='input-field' type='password' id='password-signup' />
-            </div>
-            <div class='form-group'>
-                <button class='submit-button' type='submit'>Signup</button>
-            </div>
-        </form>
-    </div>
-</div>
+    <script src="/js/login.js"></script>
 
-<script src='/js/login.js'></script>
-   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{{!-- </body> --}}
 
-</body>
-
-</html>
