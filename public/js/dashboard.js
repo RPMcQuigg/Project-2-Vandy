@@ -51,6 +51,7 @@ const workdaysInput = async (event) => {
     }
 };
 
+// Not yet connected to db
 new Chart(
     document.getElementById('dashboard-chart'),
     {

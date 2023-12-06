@@ -34,7 +34,7 @@ const Workdays = sequelize.define('Workdays', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'User',
+            model: 'user',
             key: 'id'
         }
     }
