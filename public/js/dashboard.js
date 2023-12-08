@@ -144,13 +144,13 @@ const postWorkday = async (event) => {
     removeAllErrors();
 
     const newData = {
-        date: document.querySelector('#date-input').value.trim();
-        revenue: document.querySelector('#revenue-input').value.trim();
-        expenses: document.querySelector('#expenses-input').value.trim();
-        miles: document.querySelector('#miles-input').value.trim();
-        hours: document.querySelector('#hours-input').value.trim();
-        rain: document.querySelector('#rain-input').value.trim();
-        temperature: document.querySelector('#temperature-input').value.trim();
+        date: document.querySelector('#date-input').value.trim(),
+        revenue: document.querySelector('#revenue-input').value.trim(),
+        expenses: document.querySelector('#expenses-input').value.trim(),
+        miles: document.querySelector('#miles-input').value.trim(),
+        hours: document.querySelector('#hours-input').value.trim(),
+        rain: document.querySelector('#rain-input').value.trim(),
+        temperature: document.querySelector('#temperature-input').value.trim()
     }
 
     try {
