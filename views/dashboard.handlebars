@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Financial Charts</title>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="monthlyRevenueChart"></canvas>
+        <canvas id="yearlyRevenueChart"></canvas>
+        <canvas id="monthlyExpensesChart"></canvas>
+        <canvas id="yearlyExpensesChart"></canvas>
+        <canvas id="monthlyTotalChart"></canvas>
+        <canvas id="yearlyTotalChart"></canvas>
+    </div>
+    
+    <form id="financialForm">
+        <label for="date-input">Date:</label>
+        <input type="date" id="date-input" required>
+
+        <label for="revenue-input">Revenue:</label>
+        <input type="number" id="revenue-input" required>
+
+        <label for="expenses-input">Expenses:</label>
+        <input type="number" id="expenses-input" required>
+
+        <!-- Add other input fields as needed -->
+
+        <button type="button" onclick="workdaysInput(event)">Submit</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
+    <script src="../public/js/dashboard.js"></script>
+</body>
+</html>

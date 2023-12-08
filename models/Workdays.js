@@ -1,43 +1,60 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-const Workdays = sequelize.define('Workdays', {
+class Workdays extends Model {}
+
+Workdays.init(
+{
+    id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+    },
     date: {
-        type: DataTypes.DATE,
-        allowNull: false
+    type: DataTypes.DATE,
+    allowNull: false,
     },
     revenue: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: true
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
     },
     expenses: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: true
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
     },
     hours: {
-        type: DataTypes.INTEGER, 
-        allowNull: true
+    type: DataTypes.INTEGER,
+    allowNull: true,
     },
     miles: {
-        type: DataTypes.INTEGER,
-        allowNull: true
+    type: DataTypes.INTEGER,
+    allowNull: true,
     },
     rain: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
     },
     temperature: {
-        type: DataTypes.INTEGER,
-        allowNull: true
+    type: DataTypes.INTEGER,
+    allowNull: true,
     },
     user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'User',
-            key: 'id'
-        }
-    }
-});
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+        model: 'user',
+        key: 'id',
+    },
+    },
+},
+{
+    sequelize,
+    timestamps: false,
+    freezeTableName: true,
+    underscored: true,
+    modelName: 'workdays',
+}
+);
 
 module.exports = Workdays;

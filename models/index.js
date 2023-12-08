@@ -11,4 +11,4 @@ User.hasMany(Workdays, {
     foreignKey: 'user_id',
 });
 
-module.exports = { User };
+module.exports = { User, Workdays };
