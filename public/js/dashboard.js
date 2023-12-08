@@ -143,15 +143,23 @@ const postWorkday = async (event) => {
     event.preventDefault();
     removeAllErrors();
 
+    const date = document.querySelector('#date-input').value.trim();
+    const revenue = document.querySelector('#revenue-input').value.trim();
+    const expenses = document.querySelector('#expenses-input').value.trim();
+    const miles = document.querySelector('#miles-input').value.trim();
+    const hours = document.querySelector('#hours-input').value.trim();
+    const rain = document.querySelector('#rain-input').value.trim();
+    const temperature = document.querySelector('#temperature-input').value.trim();
+
     const newData = {
-        date: document.querySelector('#date-input').value.trim(),
-        revenue: document.querySelector('#revenue-input').value.trim(),
-        expenses: document.querySelector('#expenses-input').value.trim(),
-        miles: document.querySelector('#miles-input').value.trim(),
-        hours: document.querySelector('#hours-input').value.trim(),
-        rain: document.querySelector('#rain-input').value.trim(),
-        temperature: document.querySelector('#temperature-input').value.trim()
-    }
+        date,
+        revenue,
+        expenses,
+        miles,
+        hours,
+        rain,
+        temperature
+    };
 
     try {
         const newWorkday = await fetch('/api/workdays', {
@@ -173,67 +181,3 @@ const postWorkday = async (event) => {
 };
 
 submitBtnEl.addEventListener('click', postWorkday);
-
-/*const workdaysInput = async (event) => {
-    event.preventDefault();
-    removeAllErrors();
-    
-    const date = document.querySelector('#date-input').value.trim();
-    const revenue = document.querySelector('#revenue-input').value.trim();
-    const expenses = document.querySelector('#expenses-input').value.trim();
-    const hours = document.querySelector('#hours-input').value.trim();
-    const miles = document.querySelector('#miles-input').value.trim();
-    const rain = document.querySelector('#rain-input').value.trim();
-    const temperature = document.querySelector('#temperature-input').value.trim();
-    // TODO: session User = User
-
-    
-    if (!date) {
-        showError(dateInputEl, "Please provide a date.")
-        return;
-    }
-    
-    const newLog = {
-        date,
-        revenue,
-        expenses,
-        hours,
-        miles,
-        rain,
-        temperature
-    }
-    
-    try {
-        const response = await fetch('/api/workdays/', {
-            method: 'POST',
-            body: JSON.stringify(newLog),
-            headers: { 'Content-Type': 'application/json' },
-        });
-        
-        if (!response.ok) {
-        const res = await response.json();
-        console.log(res);
-        return;
-        }
-        
-    } catch (err) {
-        console.log(err);
-    }
-};
-
-// Not yet connected to db
-new Chart(
-    document.getElementById('dashboard-chart'),
-    {
-        type: 'line',
-        data: {
-            labels: data.map(row => row.date),
-            datasets: [
-                {
-                    label: 'Daily Revenue',
-                    data: data.map(row => row.revenue)
-                }
-            ]
-        }
-    }
-)*/
