@@ -1,3 +1,5 @@
+const submitBtnEl = getElementById('')
+
 document.addEventListener("DOMContentLoaded", function () {
     let financialData = [];
 
@@ -102,7 +104,12 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 });
 
+// TODO: Finish this function. This will generate a chart for lifetime revenue.
 const revChart = (id, label, color) => {
+
+    // Fetch Data From WorkdaysRoutes
+
+
     const ctx = document.getElementById(id).getContext("2d");
     new Chart(ctx, {
         type: 'line',
@@ -131,6 +138,41 @@ const revChart = (id, label, color) => {
     });
 };
 
+// New Data Submit Button
+const postWorkday = async (event) => {
+    event.preventDefault();
+    removeAllErrors();
+
+    const newData = {
+        date: document.querySelector('#date-input').value.trim();
+        revenue: document.querySelector('#revenue-input').value.trim();
+        expenses: document.querySelector('#expenses-input').value.trim();
+        miles: document.querySelector('#miles-input').value.trim();
+        hours: document.querySelector('#hours-input').value.trim();
+        rain: document.querySelector('#rain-input').value.trim();
+        temperature: document.querySelector('#temperature-input').value.trim();
+    }
+
+    try {
+        const newWorkday = await fetch('/api/workdays', {
+            method: 'POST',
+            body: JSON.stringify(newData),
+            headers: { 'Content-Type': 'application/json' },
+        });
+    
+        if (!response.ok) {
+            const res = await response.json();
+            console.log(res);
+            return;
+        }
+    
+        res.status(200).json(newWorkday);
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+submitBtnEl.addEventListener('click', postWorkday);
 
 /*const workdaysInput = async (event) => {
     event.preventDefault();
