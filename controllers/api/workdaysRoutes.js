@@ -34,6 +34,14 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Day Snapshot
+
+router.get('/snapshot', async (req, res ) => {
+    // try {
+
+    // }
+});
+
 // Lifetime
 router.get('/revenue', async (req, res) => {
     try {
@@ -112,6 +120,29 @@ router.get('/hours', async (req, res) => {
         });
 
         res.status(200).json(totalHours);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json(err);
+    }
+});
+
+router.get('/hourly-revenue', async (req, res) => {
+    try {
+        const totalRevenue = await Workdays.sum('revenue', {
+            where: {
+                user_id: req.user.id,
+            },
+        });
+
+        const totalHours = await Workdays.sum('hours', {
+            where: {
+                user_id: req.user.id,
+            },
+        });
+
+        const hourlyRev = totalRevenue / totalHours;
+
+        res.status(200).json(hourlyRev);
     } catch (err) {
         console.error(err);
         res.status(500).json(err);

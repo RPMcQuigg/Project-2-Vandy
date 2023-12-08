@@ -100,6 +100,37 @@ document.addEventListener("DOMContentLoaded", function () {
             }),
         };
     };
+});
+
+const revChart = (id, label, color) => {
+    const ctx = document.getElementById(id).getContext("2d");
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: label,
+                borderColor: color,
+                data: [],
+                fill: false,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: 'category',
+                    labels: [],
+                },
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+};
+
 
 /*const workdaysInput = async (event) => {
     event.preventDefault();
