@@ -1,68 +1,107 @@
-import Chart from 'chart.js/auto';
-
-// Needs a form for user input with fields [Date, Revenue, Expenses, Hours Worked, Miles Driven, Rain, Temperature] with submit at the end
-
-// Workdays User Input Submit 
 document.addEventListener("DOMContentLoaded", function () {
-    let chartData = {
-        labels: [],
-        datasets: [
-            {
-                label: "revenue",
-                borderColor: 'rgb(255, 99, 132)',
-                data: [],
-                fill: false,
-            },
-            {
-                label: "expenses",
-                borderColor: 'rgb(75, 192, 192)',
-                data: [],
-                fill: false,
-            },
-        ],
+    let financialData = [];
+
+    const initializeCharts = () => {
+        createChart("monthlyRevenueChart", "Monthly Revenue", "rgb(255, 99, 132)");
+        createChart("yearlyRevenueChart", "Yearly Revenue", "rgb(255, 99, 132)");
+        createChart("monthlyExpensesChart", "Monthly Expenses", "rgb(75, 192, 192)");
+        createChart("yearlyExpensesChart", "Yearly Expenses", "rgb(75, 192, 192)");
+        createChart("monthlyTotalChart", "Monthly Total", "rgb(0, 0, 0)");
+        createChart("yearlyTotalChart", "Yearly Total", "rgb(0, 0, 0)");
     };
 
-    const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            x: {
-                type: 'category',
-                labels: chartData.labels,
+    const createChart = (id, label, color) => {
+        const ctx = document.getElementById(id).getContext("2d");
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: label,
+                    borderColor: color,
+                    data: [],
+                    fill: false,
+                }],
             },
-            y: {
-                beginAtZero: true,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'category',
+                        labels: [],
+                    },
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
             },
-        },
+        });
     };
 
-    const ctx = document.getElementById("lineChart").getContext("2d");
-    const lineChart = new Chart(ctx, {
-        type: 'line',
-        data: chartData,
-        options: options,
-    });
+    const updateCharts = () => {
+        const dateInput = document.getElementById("date-input").value.trim();
+        const revenueInput = parseFloat(document.getElementById("revenue-input").value.trim());
+        const expensesInput = parseFloat(document.getElementById("expenses-input").value.trim());
 
-    window.addData = function (dataType) {
-        const inputElement = document.getElementById(dataType);
-        const formData = {
-            label: new Date().toLocaleDateString(),
-            data: Number(inputElement.value),
+        if (!dateInput || isNaN(revenueInput) || isNaN(expensesInput)) {
+            alert("Please provide valid inputs.");
+            return;
+        }
+
+        const entry = {
+            date: dateInput,
+            revenue: revenueInput,
+            expenses: expensesInput,
         };
 
-        chartData.labels.push(formData.label);
-        chartData.datasets.find(ds => ds.label === dataType).data.push(formData.data);
+        financialData.push(entry);
 
-        lineChart.update();
+        updateChartData();
+        updateChart("monthlyRevenueChart", getMonthlyData(financialData, "revenue"));
+        updateChart("yearlyRevenueChart", getYearlyData(financialData, "revenue"));
+        updateChart("monthlyExpensesChart", getMonthlyData(financialData, "expenses"));
+        updateChart("yearlyExpensesChart", getYearlyData(financialData, "expenses"));
 
-        inputElement.value = "";
+        const totalData = calculateTotalData(financialData);
+        updateChart("monthlyTotalChart", getMonthlyData(totalData, "total"));
+        updateChart("yearlyTotalChart", getYearlyData(totalData, "total"));
     };
 
-    window.filterData = function () {
-    };
-});
+    const updateChartData = () => {
+        const currentDate = new Date();
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-const workdaysInput = async (event) => {
+        financialData = financialData.filter(entry => new Date(entry.date) >= thirtyDaysAgo);
+    };
+
+    const getMonthlyData = (data, dataType) => {
+        const currentDate = new Date();
+        const lastMonth = new Date();
+        lastMonth.setMonth(lastMonth.getMonth() - 1);
+
+        const filteredData = data.filter(entry => new Date(entry.date) >= lastMonth);
+        return {
+            labels: filteredData.map(entry => entry.date),
+            data: filteredData.map(entry => entry[dataType]),
+        };
+    };
+
+    const getYearlyData = (data, dataType) => {
+        const currentYear = new Date().getFullYear();
+
+        const filteredData = data.filter(entry => new Date(entry.date).getFullYear() === currentYear);
+        return {
+            labels: Array.from({ length: 12 }, (_, i) => (i + 1).toString()), // Labels for each month
+            data: Array.from({ length: 12 }, (_, i) => {
+                const monthData = filteredData.filter(entry => new Date(entry.date).getMonth() === i);
+                return monthData.reduce((total, entry) => total + entry[dataType], 0);
+            }),
+        };
+    };
+
+/*const workdaysInput = async (event) => {
     event.preventDefault();
     removeAllErrors();
     
@@ -124,4 +163,4 @@ new Chart(
             ]
         }
     }
-)
+)*/
