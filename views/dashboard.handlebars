@@ -1,50 +1,69 @@
-<!DOCTYPE html>
-<!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <title>Financial Charts</title>
 </head>
+
 <body>
-    <div class="chart-container">
-        <canvas id="monthlyRevenueChart"></canvas>
-        <canvas id="yearlyRevenueChart"></canvas>
-        <canvas id="monthlyExpensesChart"></canvas>
-        <canvas id="yearlyExpensesChart"></canvas>
-        <canvas id="monthlyTotalChart"></canvas>
-        <canvas id="yearlyTotalChart"></canvas>
+
+    <button id='switchChartButton' onclick='switchRevenueExpensesChart()'>Switch</button>
+
+    <div class='chart-container'>
+        <canvas id='revenueExpensesChart'></canvas>
     </div>
-    
-    <form id="financialForm">
-        <label for="date-input">Date:</label>
-        <input type="date" id="date-input" required>
 
-        <label for="revenue-input">Revenue:</label>
-        <input type="number" id="revenue-input">
+    <div class='form-stats'>
+        <form id='financialForm' onsubmit='addWorkday(event)'>
+            <label for='date-input'>Date:</label>
+            <input type='date' id='date-input' required />
 
-        <label for="expenses-input">Expenses:</label>
-        <input type="number" id="expenses-input">
+            <label for='revenue-input'>Revenue:</label>
+            <input type='number' id='revenue-input' />
 
-        <label for="miles-input">Miles:</label>
-        <input type="number" id="miles-input">
+            <label for='expenses-input'>Expenses:</label>
+            <input type='number' id='expenses-input' />
 
-        <label for="hours-input">Hours:</label>
-        <input type="number" id="hours-input">
+            <label for='miles-input'>Miles:</label>
+            <input type='number' id='miles-input' />
 
-        <label for="rain-input">Rain (y/n):</label>
-        <input type="checkbox" id="rain-input">
+            <label for='hours-input'>Hours:</label>
+            <input type='number' id='hours-input' />
 
-        <label for="temperature">Temperature:</label>
-        <input type="number" id="temperature">
+            <label for='rain-input'>Rain (y/n):</label>
+            <input type='checkbox' id='rain-input' />
 
-        <!-- Add other input fields as needed -->
+            <label for='temperature-input'>Temperature:</label>
+            <input type='number' id='temperature-input' />
 
-        <button type="button" onclick="workdaysInput(event)">Submit</button>
-    </form>
+            <input type='submit' value='Submit' />
+        </form>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
-    <script src="../public/js/dashboard.js"></script>
+        <div class="statsBox">
+            <h2>Today's Statistics</h2>
+            <p><strong>Revenue:</strong> <span id="dailyRevenueValue">N/A</span></p>
+            <p><strong>Expenses:</strong> <span id="dailyExpensesValue">N/A</span></p>
+            <p><strong>Net Income:</strong> <span id="dailyNetIncomeValue">N/A</span></p>
+            <p><strong>Miles Driven:</strong> <span id="dailyMilesDrivenValue">N/A</span></p>
+            <p><strong>Hours Worked:</strong> <span id="dailyHoursWorkedValue">N/A</span></p>
+            <p><strong>Temperature:</strong> <span id="dailyAverageTemperatureValue">N/A</span></p>
+        </div>
+
+        <div class="statsBox">
+            <h2>Lifetime Statistics</h2>
+            <p><strong>Revenue:</strong> <span id="lifetimeRevenueValue">N/A</span></p>
+            <p><strong>Expenses:</strong> <span id="lifetimeExpensesValue">N/A</span></p>
+            <p><strong>Net Income:</strong> <span id="lifetimeNetIncomeValue">N/A</span></p>
+            <p><strong>Miles Driven:</strong> <span id="lifetimeMilesDrivenValue">N/A</span></p>
+            <p><strong>Hours Worked:</strong> <span id="lifetimeHoursWorkedValue">N/A</span></p>
+            <p><strong>Average Temperature:</strong> <span id="lifetimeAverageTemperatureValue">N/A</span></p>
+        </div>
+    </div>
+
+    <script src='/js/dashboard.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-umd-min.js'></script>
 </body>
+
 </html>
