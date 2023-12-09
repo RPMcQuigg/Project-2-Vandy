@@ -109,7 +109,6 @@ router.get('/yearly', async (req, res) => {
             let netIncome = revenueSum - expensesSum;
 
             yearlyWorkdayTotals.push({ date, revenueSum, expensesSum, netIncome });
-            console.log(yearlyWorkdayTotals);
         });
 
         res.status(200).json(yearlyWorkdayTotals);
