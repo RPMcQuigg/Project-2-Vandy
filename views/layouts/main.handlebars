@@ -1,55 +1,55 @@
 <html lang='en'>
 
-  <head>
-    <meta charset='UTF-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <title>Project 2</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-  </head>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <title>Project 2</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
 
-  
-  <body>
-    <div class= >
-      <header class=" text-center">
-        <nav class="main-nav">
-          <a href="/">
-            
-              <h1>Tips</h1>
-            
 
-          </a>
-          <!-- Conditionally render login or logout links -->
-          {{#if logged_in}}
-            <a href='/dashboard'>Dashboard</a>
+<body>
+  <div class=>
+    <header class=" text-center">
+      <nav class="main-nav">
+        <a href="/">
 
-            <a href='/profile'>Profile</a>
+          <h1>Tips</h1>
 
-                                <div class="ml-right"> <!-- Use Bootstrap's 'ml-auto' class to push the following elements to the right -->
-                        <button class="btn btn-dark" id='logout'>Logout</button>
-                    </div>
 
-            {{!-- <button class="navbar navbar-expand-lg navbar-dark bg-dark" id='logout'>logout</button> --}}
-          {{else}}
-            <a href='/login'class="nav-link">Login or Sign-up</a>
-          {{/if}}
-        </nav>
-      </header>
-      <main class=''>
-        <!-- Render the sub layout -->
-        {{{body}}}
-      </main>
-      <footer>
+        </a>
+        <!-- Conditionally render login or logout links -->
+        {{#if logged_in}}
+        <a href='/dashboard'>Dashboard</a>
 
-      </footer>
-    </div>
+        <a href='/profile'>Profile</a>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <div class="ml-right"> <!-- Use Bootstrap's 'ml-auto' class to push the following elements to the right -->
+          <button class="btn btn-dark" id='logout'>Logout</button>
+        </div>
 
-    {{#if logged_in}}
-      <script src='/js/logout.js'></script>
-    {{/if}}
-  </body>
+        {{!-- <button class="navbar navbar-expand-lg navbar-dark bg-dark" id='logout'>logout</button> --}}
+        {{else}}
+        <a href='/login' class="nav-link">Login or Sign-up</a>
+        {{/if}}
+      </nav>
+    </header>
+    <main class=''>
+      <!-- Render the sub layout -->
+      {{{body}}}
+    </main>
+    <footer>
+
+    </footer>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  {{#if logged_in}}
+  <script src='/js/logout.js'></script>
+  {{/if}}
+</body>
 
 </html>

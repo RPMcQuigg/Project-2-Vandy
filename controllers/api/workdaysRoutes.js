@@ -1,8 +1,25 @@
 const router = require('express').Router();
 const { Workdays } = require('../../models');
+const _ = require('underscore');
+const datejs = require('datejs');
+
+router.get('/', async (req, res) => {
+    try {
+        const workData = await Workdays.findAll({
+            where: {
+                user_id: req.session.user_id,
+            },
+        });
+        res.status(200).json(workData);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+});
 
 router.post('/', async (req, res) => {
     try {
+        req.body.user_id = req.session.user_id;
         const workData = await Workdays.create(req.body);
 
         req.body.date = workData.date;
@@ -20,131 +37,163 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/', async (req, res) => {
+
+router.get('/monthly', async (req, res) => {
     try {
-        const workData = await Workdays.findAll({
+        let workdayData = await Workdays.findAll({
             where: {
-                user_id: req.user.id
-            }
+                user_id: req.session.user_id,
+            },
+            attributes: ['date', 'revenue', 'expenses'],
+            order: [['date', 'ASC']],
+            raw: true,
         });
-        res.status(200).json(workData);
+
+        let groupedWorkdaysByMonth = _.groupBy(workdayData, function (workday) {
+            const date = new Date(workday.date);
+            const month = date.toLocaleString('default', { month: 'short' });
+            const year = date.getFullYear();
+            return `${month} ${year}`;
+        });
+
+        let monthlyWorkdayTotals = [];
+
+        _.keys(groupedWorkdaysByMonth).forEach((date) => {
+            let revenueSum = 0.0;
+            let expensesSum = 0.0;
+
+            groupedWorkdaysByMonth[date].forEach((workDay) => {
+                revenueSum += parseFloat(workDay.revenue);
+                expensesSum += parseFloat(workDay.expenses);
+            });
+
+            let netIncome = revenueSum - expensesSum;
+
+            monthlyWorkdayTotals.push({ date, revenueSum, expensesSum, netIncome });
+        });
+
+        res.status(200).json(monthlyWorkdayTotals);
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
     }
 });
 
-// Day Snapshot
-
-router.get('/snapshot', async (req, res ) => {
-    // try {
-
-    // }
-});
-
-// Lifetime
-router.get('/revenue', async (req, res) => {
+router.get('/yearly', async (req, res) => {
     try {
-        const totalRevenue = await Workdays.sum('revenue', {
+        let workdayData = await Workdays.findAll({
             where: {
-                user_id: req.user.id,
+                user_id: req.session.user_id,
             },
+            attributes: ['date', 'revenue', 'expenses'],
+            order: [['date', 'ASC']],
+            raw: true,
         });
 
-        res.status(200).json({ totalRevenue });
+        let groupedWorkdaysByYear = _.groupBy(workdayData, function (workday) {
+            const date = new Date(workday.date);
+            return date.getFullYear();
+        });
+
+        let yearlyWorkdayTotals = [];
+
+        _.keys(groupedWorkdaysByYear).forEach((date) => {
+            let revenueSum = 0.0;
+            let expensesSum = 0.0;
+
+            groupedWorkdaysByYear[date].forEach((workDay) => {
+                revenueSum += parseFloat(workDay.revenue);
+                expensesSum += parseFloat(workDay.expenses);
+            });
+
+            let netIncome = revenueSum - expensesSum;
+
+            yearlyWorkdayTotals.push({ date, revenueSum, expensesSum, netIncome });
+            console.log(yearlyWorkdayTotals);
+        });
+
+        res.status(200).json(yearlyWorkdayTotals);
     } catch (err) {
-        console.error(err);
+        console.log(err);
         res.status(500).json(err);
     }
 });
 
-router.get('/expenses', async (req, res) => {
+router.get('/daily-statistics', async (req, res) => {
     try {
-        const totalRevenue = await Workdays.sum('expenses', {
+
+        const todayStart = new Date()
+        todayStart.setHours(0, 0, 0, 0);
+
+        let workdayData = await Workdays.findAll({
             where: {
-                user_id: req.user.id,
+                user_id: req.session.user_id,
+                date: todayStart
             },
+            attributes: ['date', 'revenue', 'expenses', 'hours', 'miles', 'temperature'],
+            raw: true,
         });
 
-        res.status(200).json({ totalRevenue });
+        let stats = {
+            revenue: 0.00,
+            expenses: 0.00,
+            netIncome: 0.00,
+            hours: 0,
+            miles: 0,
+            averageTemperature: 0
+        }
+
+        workdayData.forEach((workday) => {
+            stats.revenue += parseFloat(workday.revenue);
+            stats.expenses += parseFloat(workday.expenses);
+            stats.hours += workday.hours;
+            stats.miles += workday.miles;
+            stats.averageTemperature += workday.temperature;
+        });
+
+        stats.netIncome = stats.revenue - stats.expenses;
+        stats.averageTemperature = stats.averageTemperature / workdayData.length;
+
+        res.status(200).json(stats);
     } catch (err) {
-        console.error(err);
+        console.log(err);
         res.status(500).json(err);
     }
 });
 
-router.get('/net-income', async (req, res) => {
+router.get('/lifetime-statistics', async (req, res) => {
     try {
-        const totalRevenue = await Workdays.sum('revenue', {
+        let workdayData = await Workdays.findAll({
             where: {
-                user_id: req.user.id,
+                user_id: req.session.user_id,
             },
+            attributes: ['date', 'revenue', 'expenses', 'hours', 'miles', 'temperature'],
+            raw: true,
         });
 
-        const totalExpenses = await Workdays.sum('expenses', {
-            where: {
-                user_id: req.user.id,
-            },
+        let stats = {
+            revenue: 0.00,
+            expenses: 0.00,
+            netIncome: 0.00,
+            hours: 0,
+            miles: 0,
+            averageTemperature: 0
+        }
+
+        workdayData.forEach((workday) => {
+            stats.revenue += parseFloat(workday.revenue);
+            stats.expenses += parseFloat(workday.expenses);
+            stats.hours += workday.hours;
+            stats.miles += workday.miles;
+            stats.averageTemperature += workday.temperature;
         });
 
-        const netIncome = totalRevenue - totalExpenses;
+        stats.netIncome = stats.revenue - stats.expenses;
+        stats.averageTemperature = stats.averageTemperature / workdayData.length;
 
-        res.status(200).json(netIncome);
+        res.status(200).json(stats);
     } catch (err) {
-        console.error(err);
-        res.status(500).json(err);
-    }
-});
-
-router.get('/miles', async (req, res) => {
-    try {
-        const totalMiles = await Workdays.sum('miles', {
-            where: {
-                user_id: req.user.id,
-            },
-        });
-
-        res.status(200).json(totalMiles);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json(err);
-    }
-});
-
-router.get('/hours', async (req, res) => {
-    try {
-        const totalHours = await Workdays.sum('hours', {
-            where: {
-                user_id: req.user.id,
-            },
-        });
-
-        res.status(200).json(totalHours);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json(err);
-    }
-});
-
-router.get('/hourly-revenue', async (req, res) => {
-    try {
-        const totalRevenue = await Workdays.sum('revenue', {
-            where: {
-                user_id: req.user.id,
-            },
-        });
-
-        const totalHours = await Workdays.sum('hours', {
-            where: {
-                user_id: req.user.id,
-            },
-        });
-
-        const hourlyRev = totalRevenue / totalHours;
-
-        res.status(200).json(hourlyRev);
-    } catch (err) {
-        console.error(err);
+        console.log(err);
         res.status(500).json(err);
     }
 });

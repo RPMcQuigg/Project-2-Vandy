@@ -1,147 +1,227 @@
-const submitBtnEl = getElementById('')
+const revenueExpensesElement = document.getElementById("revenueExpensesChart").getContext("2d");
+const switchChartButtonElement = document.getElementById("switchChartButton");
+
+const lifetimeRevenueValueElement = document.getElementById("lifetimeRevenueValue");
+const lifetimeExpensesValueElement = document.getElementById("lifetimeExpensesValue");
+const lifetimeNetIncomeValueElement = document.getElementById("lifetimeNetIncomeValue");
+const lifetimeMilesDrivenValueElement = document.getElementById("lifetimeMilesDrivenValue");
+const lifetimeHoursWorkedValueElement = document.getElementById("lifetimeHoursWorkedValue");
+const lifetimeAverageTemperatureValueElement = document.getElementById("lifetimeAverageTemperatureValue");
+
+const dailyRevenueValueElement = document.getElementById("dailyRevenueValue");
+const dailyExpensesValueElement = document.getElementById("dailyExpensesValue");
+const dailyNetIncomeValueElement = document.getElementById("dailyNetIncomeValue");
+const dailyMilesDrivenValueElement = document.getElementById("dailyMilesDrivenValue");
+const dailyHoursWorkedValueElement = document.getElementById("dailyHoursWorkedValue");
+const dailyAverageTemperatureValueElement = document.getElementById("dailyAverageTemperatureValue");
+
+let revenueExpensesChart;
+let displayingMonthly;
 
 document.addEventListener("DOMContentLoaded", function () {
-    let financialData = [];
 
-    const initializeCharts = () => {
-        createChart("monthlyRevenueChart", "Monthly Revenue", "rgb(255, 99, 132)");
-        createChart("yearlyRevenueChart", "Yearly Revenue", "rgb(255, 99, 132)");
-        createChart("monthlyExpensesChart", "Monthly Expenses", "rgb(75, 192, 192)");
-        createChart("yearlyExpensesChart", "Yearly Expenses", "rgb(75, 192, 192)");
-        createChart("monthlyTotalChart", "Monthly Total", "rgb(0, 0, 0)");
-        createChart("yearlyTotalChart", "Yearly Total", "rgb(0, 0, 0)");
-    };
+    getMonthlyWorkdays();
+    getLifetimeStatistics();
+    getDailyStatistics();
 
-    const createChart = (id, label, color) => {
-        const ctx = document.getElementById(id).getContext("2d");
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: label,
-                    borderColor: color,
-                    data: [],
-                    fill: false,
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        type: 'category',
-                        labels: [],
-                    },
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-    };
-
-    const updateCharts = () => {
-        const dateInput = document.getElementById("date-input").value.trim();
-        const revenueInput = parseFloat(document.getElementById("revenue-input").value.trim());
-        const expensesInput = parseFloat(document.getElementById("expenses-input").value.trim());
-
-        if (!dateInput || isNaN(revenueInput) || isNaN(expensesInput)) {
-            alert("Please provide valid inputs.");
-            return;
-        }
-
-        const entry = {
-            date: dateInput,
-            revenue: revenueInput,
-            expenses: expensesInput,
-        };
-
-        financialData.push(entry);
-
-        updateChartData();
-        updateChart("monthlyRevenueChart", getMonthlyData(financialData, "revenue"));
-        updateChart("yearlyRevenueChart", getYearlyData(financialData, "revenue"));
-        updateChart("monthlyExpensesChart", getMonthlyData(financialData, "expenses"));
-        updateChart("yearlyExpensesChart", getYearlyData(financialData, "expenses"));
-
-        const totalData = calculateTotalData(financialData);
-        updateChart("monthlyTotalChart", getMonthlyData(totalData, "total"));
-        updateChart("yearlyTotalChart", getYearlyData(totalData, "total"));
-    };
-
-    const updateChartData = () => {
-        const currentDate = new Date();
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-        financialData = financialData.filter(entry => new Date(entry.date) >= thirtyDaysAgo);
-    };
-
-    const getMonthlyData = (data, dataType) => {
-        const currentDate = new Date();
-        const lastMonth = new Date();
-        lastMonth.setMonth(lastMonth.getMonth() - 1);
-
-        const filteredData = data.filter(entry => new Date(entry.date) >= lastMonth);
-        return {
-            labels: filteredData.map(entry => entry.date),
-            data: filteredData.map(entry => entry[dataType]),
-        };
-    };
-
-    const getYearlyData = (data, dataType) => {
-        const currentYear = new Date().getFullYear();
-
-        const filteredData = data.filter(entry => new Date(entry.date).getFullYear() === currentYear);
-        return {
-            labels: Array.from({ length: 12 }, (_, i) => (i + 1).toString()), // Labels for each month
-            data: Array.from({ length: 12 }, (_, i) => {
-                const monthData = filteredData.filter(entry => new Date(entry.date).getMonth() === i);
-                return monthData.reduce((total, entry) => total + entry[dataType], 0);
-            }),
-        };
-    };
 });
 
-// TODO: Finish this function. This will generate a chart for lifetime revenue.
-const revChart = (id, label, color) => {
+const getLifetimeStatistics = async () => {
+    try {
+        const response = await fetch('/api/workdays/lifetime-statistics', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
 
-    // Fetch Data From WorkdaysRoutes
+        if (!response.ok) return;
 
+        let stats = await response.json();
 
-    const ctx = document.getElementById(id).getContext("2d");
-    new Chart(ctx, {
+        lifetimeRevenueValueElement.innerText = `$${stats.revenue.toLocaleString('en-US')}`;
+        lifetimeExpensesValueElement.innerText = `$${stats.expenses.toLocaleString('en-US')}`;
+        lifetimeNetIncomeValueElement.innerText = `$${stats.netIncome.toLocaleString('en-US')}`;
+        lifetimeHoursWorkedValueElement.innerText = stats.hours;
+        lifetimeMilesDrivenValueElement.innerText = stats.miles;
+        lifetimeAverageTemperatureValueElement.innerText = `${stats.averageTemperature}\u00B0F`;;
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+const getDailyStatistics = async () => {
+    try {
+        const response = await fetch('/api/workdays/daily-statistics', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) return;
+
+        let stats = await response.json();
+
+        dailyRevenueValueElement.innerText = `$${stats.revenue.toLocaleString('en-US')}`;
+        dailyExpensesValueElement.innerText = `$${stats.expenses.toLocaleString('en-US')}`;
+        dailyNetIncomeValueElement.innerText = `$${stats.netIncome.toLocaleString('en-US')}`;
+        dailyHoursWorkedValueElement.innerText = stats.hours;
+        dailyMilesDrivenValueElement.innerText = stats.miles;
+        dailyAverageTemperatureValueElement.innerText = `${stats.averageTemperature}\u00B0F`;;
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+const getMonthlyWorkdays = async () => {
+    try {
+        const response = await fetch('/api/workdays/monthly', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) return;
+
+        let monthlyWorkdayData = await response.json();
+        createMonthlyWorkdayChart(monthlyWorkdayData);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+const createMonthlyWorkdayChart = (monthlyWorkdayData) => {
+
+    const xAxisLabels = monthlyWorkdayData.map(row => row.date);
+    const inDollars = true;
+
+    const datasets = [
+        {
+            label: "Revenue by Month",
+            borderColor: "rgb(75, 192, 192)",
+            data: monthlyWorkdayData.map(row => row.revenueSum),
+            fill: false,
+        },
+        {
+            label: "Expenses by Month",
+            borderColor: "rgb(255, 99, 132)",
+            data: monthlyWorkdayData.map(row => row.expensesSum),
+            fill: false,
+        },
+        {
+            label: "Net Income by Month",
+            borderColor: "rgb(0, 100, 0)",
+            data: monthlyWorkdayData.map(row => row.netIncome),
+            fill: false,
+        }
+    ];
+
+    if (!revenueExpensesChart) {
+        revenueExpensesChart = createLineChart(revenueExpensesElement, xAxisLabels, datasets, inDollars);
+    } else {
+        revenueExpensesChart.data = {
+            labels: xAxisLabels,
+            datasets: datasets
+        };
+        revenueExpensesChart.update();
+    }
+
+    displayingMonthly = true;
+    switchChartButtonElement.innerText = "Switch to Yearly";
+};
+
+const getYearlyWorkdays = async () => {
+    try {
+        const response = await fetch('/api/workdays/yearly', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) return;
+
+        let yearlyWorkdayData = await response.json();
+        createYearlyWorkdayChart(yearlyWorkdayData);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+const createYearlyWorkdayChart = (yearlyWorkdayData) => {
+
+    const xAxisLabels = yearlyWorkdayData.map(row => row.date);
+    const inDollars = true;
+
+    const datasets = [
+        {
+            label: "Revenue by Year",
+            borderColor: "rgb(255, 99, 132)",
+            data: yearlyWorkdayData.map(row => row.revenueSum),
+            fill: false,
+        },
+        {
+            label: "Expenses by Year",
+            borderColor: "rgb(75, 192, 192)",
+            data: yearlyWorkdayData.map(row => row.expensesSum),
+            fill: false,
+        },
+        {
+            label: "Net Income by Year",
+            borderColor: "rgb(0, 100, 0)",
+            data: yearlyWorkdayData.map(row => row.netIncome),
+            fill: false,
+        }
+    ];
+
+    if (!revenueExpensesChart) {
+        revenueExpensesChart = createLineChart(revenueExpensesElement, xAxisLabels, datasets, inDollars);
+    } else {
+        revenueExpensesChart.data = {
+            labels: xAxisLabels,
+            datasets: datasets
+        };
+        revenueExpensesChart.update();
+    }
+
+    displayingMonthly = false;
+    switchChartButtonElement.innerText = "Switch to Monthly";
+};
+
+const createLineChart = (docElement, xAxisLabels, datasets, inDollars) => {
+
+    return new Chart(docElement, {
         type: 'line',
         data: {
-            labels: [],
-            datasets: [{
-                label: label,
-                borderColor: color,
-                data: [],
-                fill: false,
-            }],
+            labels: xAxisLabels,
+            datasets: datasets,
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: {
-                    type: 'category',
-                    labels: [],
-                },
                 y: {
-                    beginAtZero: true,
-                },
-            },
+                    ticks: {
+                        callback: function (value, index, ticks) {
+                            if (inDollars) return '$' + value;
+                            return value;
+                        }
+                    }
+                }
+            }
         },
     });
+
 };
 
-// New Data Submit Button
-const postWorkday = async (event) => {
+const switchRevenueExpensesChart = async () => {
+    if (displayingMonthly) {
+        getYearlyWorkdays();
+    } else {
+        getMonthlyWorkdays();
+    }
+}
+
+const addWorkday = async (event) => {
     event.preventDefault();
-    removeAllErrors();
 
     const newData = {
         date: document.querySelector('#date-input').value.trim(),
@@ -153,87 +233,32 @@ const postWorkday = async (event) => {
         temperature: document.querySelector('#temperature-input').value.trim()
     }
 
+    if (newData.rain == "on") {
+        newData.rain = 1
+    } else {
+        newData.rain = 0
+    }
+
     try {
-        const newWorkday = await fetch('/api/workdays', {
+        const response = await fetch('/api/workdays', {
             method: 'POST',
             body: JSON.stringify(newData),
             headers: { 'Content-Type': 'application/json' },
         });
-    
+
+        const res = await response.json();
+
         if (!response.ok) {
-            const res = await response.json();
-            console.log(res);
             return;
         }
-    
-        res.status(200).json(newWorkday);
+
+        if (displayingMonthly) {
+            getMonthlyWorkdays();
+        } else {
+            getYearlyWorkdays();
+        }
+
     } catch (err) {
         console.log(err);
     }
 };
-
-submitBtnEl.addEventListener('click', postWorkday);
-
-/*const workdaysInput = async (event) => {
-    event.preventDefault();
-    removeAllErrors();
-    
-    const date = document.querySelector('#date-input').value.trim();
-    const revenue = document.querySelector('#revenue-input').value.trim();
-    const expenses = document.querySelector('#expenses-input').value.trim();
-    const hours = document.querySelector('#hours-input').value.trim();
-    const miles = document.querySelector('#miles-input').value.trim();
-    const rain = document.querySelector('#rain-input').value.trim();
-    const temperature = document.querySelector('#temperature-input').value.trim();
-    // TODO: session User = User
-
-    
-    if (!date) {
-        showError(dateInputEl, "Please provide a date.")
-        return;
-    }
-    
-    const newLog = {
-        date,
-        revenue,
-        expenses,
-        hours,
-        miles,
-        rain,
-        temperature
-    }
-    
-    try {
-        const response = await fetch('/api/workdays/', {
-            method: 'POST',
-            body: JSON.stringify(newLog),
-            headers: { 'Content-Type': 'application/json' },
-        });
-        
-        if (!response.ok) {
-        const res = await response.json();
-        console.log(res);
-        return;
-        }
-        
-    } catch (err) {
-        console.log(err);
-    }
-};
-
-// Not yet connected to db
-new Chart(
-    document.getElementById('dashboard-chart'),
-    {
-        type: 'line',
-        data: {
-            labels: data.map(row => row.date),
-            datasets: [
-                {
-                    label: 'Daily Revenue',
-                    data: data.map(row => row.revenue)
-                }
-            ]
-        }
-    }
-)*/
