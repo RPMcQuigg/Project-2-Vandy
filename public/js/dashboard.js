@@ -257,7 +257,7 @@ const addWorkday = async (event) => {
         } else {
             getYearlyWorkdays();
         }
-
+    getLifetimeStatistics();         getDailyStatistics();
     } catch (err) {
         console.log(err);
     }
