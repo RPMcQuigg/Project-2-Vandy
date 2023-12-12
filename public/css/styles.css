@@ -1,4 +1,96 @@
-canvas {
+body {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+
+  /* Navigation bar styles */
+  .main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px; /* Add padding for better spacing */
+    background-color: #87ceeb;
+  }
+
+  .main-nav a {
+    color: #000000;
+  }
+
+  
+  .homeButton {
+    margin-right: auto; /* Push the homeButton to the left */
+  }
+  
+  .ml-right {
+    margin-left: auto; /* Push elements with ml-right class to the right */
+  }
+  
+
+  
+  /* Main content styles */
+  main {
+    padding: 20px;
+  }
+  
+  /* Footer styles */
+  footer {
+    background-color: #98fb98; 
+    height: 2000px;
+    flex-grow: 3;
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .wrapper {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  main {
+    flex: 1;
+  }
+  
+  #logout {
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+
+  /* Adjustments for small screens */
+  @media (max-width: 768px) {
+    .main-nav {
+        flex-direction: column;
+        text-align: center;
+      }
+    .main-nav a {
+      display: block;
+      margin: 10px 0;
+    }
+    .homeButton,
+    .ml-right {
+      margin: 0; /* Reset margin for centered elements on small screens */
+    }
+  }
+
+  /* Adjustments for small screens */
+  @media (max-width: 768px) {
+
+  
+
+  }
+
+h1.welcome-text {
+    text-align: center;
+}
+
+    canvas {
     border: 2px solid #333;
     display: block;
     margin-left: 50px;
@@ -50,7 +142,7 @@ input {
 }
 
 input[type="checkbox"] {
-    width: auto; /* For checkboxes, set width to auto to align with the label text */
+    width: auto; /* For checkboxes, set width to auto to align with the label text
     margin-bottom: 0;
 }
 
