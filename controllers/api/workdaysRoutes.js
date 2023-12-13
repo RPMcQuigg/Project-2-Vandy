@@ -44,7 +44,7 @@ router.get('/monthly', async (req, res) => {
             where: {
                 user_id: req.session.user_id,
             },
-            attributes: ['date', 'revenue', 'expenses'],
+            attributes: ['date', 'revenue', 'expenses', 'hours', 'miles', 'temperature'],
             order: [['date', 'ASC']],
             raw: true,
         });
@@ -85,7 +85,7 @@ router.get('/yearly', async (req, res) => {
             where: {
                 user_id: req.session.user_id,
             },
-            attributes: ['date', 'revenue', 'expenses'],
+            attributes: ['date', 'revenue', 'expenses', 'hours', 'miles', 'temperature'],
             order: [['date', 'ASC']],
             raw: true,
         });

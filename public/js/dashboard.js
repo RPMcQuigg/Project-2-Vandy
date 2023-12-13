@@ -6,14 +6,14 @@ const lifetimeExpensesValueElement = document.getElementById("lifetimeExpensesVa
 const lifetimeNetIncomeValueElement = document.getElementById("lifetimeNetIncomeValue");
 const lifetimeMilesDrivenValueElement = document.getElementById("lifetimeMilesDrivenValue");
 const lifetimeHoursWorkedValueElement = document.getElementById("lifetimeHoursWorkedValue");
-const lifetimeAverageTemperatureValueElement = document.getElementById("lifetimeAverageTemperatureValue");
+// const lifetimeAverageTemperatureValueElement = document.getElementById("lifetimeAverageTemperatureValue");
 
 const dailyRevenueValueElement = document.getElementById("dailyRevenueValue");
 const dailyExpensesValueElement = document.getElementById("dailyExpensesValue");
 const dailyNetIncomeValueElement = document.getElementById("dailyNetIncomeValue");
 const dailyMilesDrivenValueElement = document.getElementById("dailyMilesDrivenValue");
 const dailyHoursWorkedValueElement = document.getElementById("dailyHoursWorkedValue");
-const dailyAverageTemperatureValueElement = document.getElementById("dailyAverageTemperatureValue");
+// const dailyAverageTemperatureValueElement = document.getElementById("dailyAverageTemperatureValue");
 
 let revenueExpensesChart;
 let displayingMonthly;
@@ -42,7 +42,7 @@ const getLifetimeStatistics = async () => {
         lifetimeNetIncomeValueElement.innerText = `$${stats.netIncome.toLocaleString('en-US')}`;
         lifetimeHoursWorkedValueElement.innerText = stats.hours;
         lifetimeMilesDrivenValueElement.innerText = stats.miles;
-        lifetimeAverageTemperatureValueElement.innerText = `${stats.averageTemperature}\u00B0F`;;
+        // lifetimeAverageTemperatureValueElement.innerText = `${stats.averageTemperature}\u00B0F`;;
 
     } catch (err) {
         console.log(err);
@@ -65,7 +65,7 @@ const getDailyStatistics = async () => {
         dailyNetIncomeValueElement.innerText = `$${stats.netIncome.toLocaleString('en-US')}`;
         dailyHoursWorkedValueElement.innerText = stats.hours;
         dailyMilesDrivenValueElement.innerText = stats.miles;
-        dailyAverageTemperatureValueElement.innerText = `${stats.averageTemperature}\u00B0F`;;
+        // dailyAverageTemperatureValueElement.innerText = `${stats.averageTemperature}\u00B0F`;;
 
     } catch (err) {
         console.log(err);
